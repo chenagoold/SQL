@@ -13,7 +13,7 @@ utf8_geniral_ci user == User
 Auto-increments --автозаполнение
 
 
-//Просмотр БД 
+//Просмотр БД
 show databases;
 
 //Выбор БД
