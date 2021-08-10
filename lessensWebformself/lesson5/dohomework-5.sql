@@ -1,24 +1,16 @@
--- 1. Напишите запрос, который выберет все ряды из таблицы заказов (orders) за март и апрель
-SELECT * FROM orders WHERE odate IN('1990-03-10','1990-04-10');
-
--- 2. Выберите всех клиентов (таблица customer) продавцов Peel и Motika.
-SELECT snum FROM salers WHERE sname IN('Peel', 'Motika');
-SELECT cname FROM customers WHERE snum IN(1001, 1004);
-SELECT cname FROM customers WHERE snum IN(SELECT snum FROM salers WHERE sname IN('Peel','Motika'));
+-- 1. Получите среднее значение поля amt (таблица orders), не используя при этом функцию AVG.
+--Результат должен быть получен одним запросом
+SELECT ((SELECT SUM(amt) FROM orders) / (SELECT count(amt) FROM orders)) AS result;
 
 
--- 3. Составте запрос, который выведет всех клиентов, чьи имена находятся в диапазоне A-G
-SELECT cname FROM customers WHERE cname BETWEEN 'A' AND 'H';
+-- 2. Получить сумму всех продаж с индефикатором 1007.
+SELECT SUM(amt) AS SUM FROM orders WHERE snum = 1007;
+SELECT SUM(amt) AS SUM FROM orders GROUP BY snum HAVING snum = 1007;
 
--- 4. Выберите всех представителей, чьи имена начинаются с латинской литеры "C".
-SELECT sname FROM salers WHERE sname LIKE 'C%';
+-- 3. Получить список городов (без повторов) и максимальный рейтинг для каждого из них из таблицы customers
+SELECT city, MAX(rating) FROM customers GROUP BY;
 
--- 5. Выберите все представителей, чьи имена начинаются с латинской литеру "D" и при этом заканчиваются на "n"
-SELECT sname FROM salers WHERE sname LIKE 'D%' AND sname LIKE'$n';
-SELECT sname FRoM salers WHERE sname LIKE 'D%n';
+-- 4. Получить список городов (без повторов) и минимальный рейтинг для каждого из них из таблицы customers
+SELECT city, MIN(rating) FROM customers GROUP BY;
 
--- 6. Выберите всех представителей, чьи имена начинаются на латинскую литеру "n", но не начинаются на латинскую литеру
-SELECT sname FROM salers WHERE sname LIKE 'n%' AND sname NOT LIKE 'D%';
 
--- 7.Выберите все ряды с NULL-значениям из таблицы продавцов.
-SELECT * FROM salers WHERE sname IS NULL;
