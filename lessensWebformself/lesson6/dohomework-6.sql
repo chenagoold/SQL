@@ -12,7 +12,7 @@ SELECT c.name, c.rating, c.city s.sname FROM customers c, salers s WHERE rating 
 -- 4. Выберите имена продавцов (таблица salers), сумму каждой продажи прдавцов (таблица orders) и подсчитанную
 --сумму комиссионных с каждой конкретной продажи. Вывод сопроводите пояснениями, чтобы каждый ряд таблицы имел 
 --следующий вид: 
-SELECT 'Продавец:', s.sname, 'Сумму Продажи:', o.amt, 'Размер комиссонных:,', s.comm * o.amt FROM salers s, orders 0
+SELECT 'Продавец:', s.sname, 'Сумму Продажи:', o.amt, 'Размер комиссонных:,', s.comm * o.amt FROM salers s, orders o
 WHERE s.snum = o.snum;
 
 
