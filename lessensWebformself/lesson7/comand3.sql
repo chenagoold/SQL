@@ -496,11 +496,86 @@ SELECT UPPER(sname) FROM salers;
 SELECT UCASE(sname) FROM salers;
 
 
-
-
-
-
-
-
 //++++++++++++++++++++++++++++++++++++++++++LESSON-7++++++++++++++++++++++++++++++++
+
+//++++++++++++++++++++++++++++++++++++++++++LESSON-8++++++++++++++++++++++++++++++++
+--89
+SELECT 'a' REGEXP 'a'; --1
+--90
+SELECT 'a' REGEXP 'b'; --0
+
+--91 от a до z в словах в этом диапозоне где есть буквы находим их
+SELECT * FROM salers WHERE sname REGEXP '[a-z]';
+
+--92 русские буквы
+SELECT * FROM salers WHERE sname REGEXP '[а-я]';
+
+--93 где начинается на '^S'
+SELECT * FROM salers WHERE sname REGEXP '^S';
+
+--94 имена которые закнчиваются на букву 'n$'
+SELECT * FROM salers WHERE sname REGEXP 'n$';
+
+--95 Точка любой символ кроме '^r' в начале
+SELECT * FROM salers WHERE sname REGEXP '^[^r].*';
+
+
+--96 Проверим от начала до конца на наличии буквы '^r' если есть не выводим
+SELECT * FROM salers WHERE sname REGEXP '^[^r]*$';
+
+--97 Провери на количество в слове букв (2)
+SELECT * FROM salers WHERE sname REGEXP '[r]{2}';
+
+--98 Найдем значения где есть опостроф (')
+SELECT * FROM salers WHERE sname REGEXP '\'';
+
+--99 Провери на количество в слове букв (2)
+SELECT * FROM salers WHERE sname REGEXP '(r){2}';
+
+--100 Найти сочетание букв 
+SELECT * FROM salers WHERE sname REGEXP '(rr)';
+
+--101 функция ABS() меняет отрицательное число на положительное
+SELECT comm, ABS(comm) AS res FROM salers; 
+
+--102 
+SELECT SIGN(comm) AS res FROM salers;
+
+--103
+SELECT * FROM salers WHERE SIGN(comm) = -1;
+
+--104
+SELECT MOD(5,2);
+
+--105
+SELECT comm, FLOOR(comm) FROM salers;
+
+--106
+SELECT comm, CEIL(comm) FROM salers;
+
+--107 округляем
+SELECT ROUND(2.6);
+
+--108
+SELECT comm, ROUND(comm, 1) FROM salers;
+
+--109
+SELECT comm, ROUND(comm, 0) FROM salers;
+
+--110
+SELECT POW(3,2)
+
+--111
+SELECT SQRT(9)
+
+--112
+SELECT * FROM salers ORDER BY RAND() LIMIT 1;
+
+--113
+SELECT * FROM salers ORDER BY RAND() LIMIT 1;
+
+--114 показать количество после запятой
+SELECT comm, TRUNCATE(comm, 1) FROM salers;
+
+ //++++++++++++++++++++++++++++++++++++++++++LESSON-8++++++++++++++++++++++++++++++++
 
