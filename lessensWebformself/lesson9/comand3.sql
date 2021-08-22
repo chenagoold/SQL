@@ -191,7 +191,7 @@ SELECT snum, MAX(amt) FROM orders WHERE snum = 1007;
 --43 GROUP BY  отсортировать 
 SELECT snum, MAX(amt) FROM orders GROUP BY snum;
 
---44
+--44 HAVING групирует
 SELECT snum, MAX(amt) AS res FROM orders GROUP BY snum HAVING COUNT(snum) > 2;
 
 --45 выбрать максимальное число где в поле res > 2000
@@ -818,5 +818,41 @@ SELECT NOW(), TIME(NOW());
 | 2021-08-16 07:55:24 | 07:55:24    |
 +---------------------+-------------+
 
- //++++++++++++++++++++++++++++++++++++++++++LESSON-8++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++LESSON-9++++++++++++++++++++++++++++++++
+
+//++++++++++++++++++++++++++++++++++++++++++LESSON-10++++++++++++++++++++++++++++++++
+-- 145 Объединение таблицы с собой... получаем пары заказчиков с одинаковыми рейтингами
+SELECT f.cname, s.cname, f.rating FROM customers f, customers s WHERE f.rating = s.rating;
+
+-- 146 Объединение таблицы с собой... получаем пары заказчиков с одинаковыми рейтингами - устраняем избыточность
+SELECT f.cname, s.cname, f.rating FROM customers f, customers s WHERE f.rating = s.rating AND f.cname > s.cname;
+
+--147 Объединение таблицы с собой... выбор нескольких продавцов в 1 городе
+SELECT f.cname, s.cname, f.rating FROM customers f, customers s WHERE f.city = s.city AND f.cname < s.cname;
+
+--148 Выборка всех клиентов продавца
+SELECT cname, snum FROM customers WHERE snum = (SELECT snum FROM salers WHERE sname = 'Peel');
+
+--149 Запрос, возвращающий ошибку, поскольку результатом подзапроса есть множество
+SELECT * FROM orders WHERE snum = (SELECT snum FROM salers WHERE city = 'London');
+
+--150 Тот же запрос, но без ошибки
+SELECT * FROM orders WHERE snum IN(SELECT snum FROM salers WHERE city = 'London');
+
+--151 Выборка продавцов с более чем 1 клиентом
+SELECT snum, sname FROM salers WHERE snum IN(SELECT snum FROM customers GROUP BY snum HAVING COUNT(snum) > 1);
+
+--152 ВЫбор продовцов без клиентов
+SELECT snum, sname FROM salers WHERE snum NOT IN(SELECT snum FROM customers);
+
+--153 Соотнесенный подзапрос... выборка всех клиентов за апрель
+SELECT * FROM customers c WHERE '1990-04-10' IN(SELECT odate FROM orders o WHERE c.cnum = o.cnum);
+
+--154 Тот же результат, но с объединением таблиц на основе справочной целостности
+SELECT o.cnum, c.name, c.city, c.rating, s.snum FROM orders o, customers c WHERE o.cnum = c.cnum AND odate = '1990-04-10';
+
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++LESSON-10++++++++++++++++++++++++++++++++
 

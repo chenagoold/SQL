@@ -26,4 +26,4 @@ SELECT snum, sname FROM salers WHERE snum NOT IN (SELECT snum FROM customers);
 SELECT * FROM customers c WHERE '1990-04-10' IN (SELECT odate FROM orders o WHERE o.cnum = c.cnum);
 
 -- 10 Тот же результат, но с объединением таблиц на основе справочной целостности
-SELECT o.cnum, c.cname, c.city, c.rating, c.snum FROM orders o, customers c WHERE c.cnum = o.cnum AND odate = '1990-04-10';
+SELECT o.cnum, c.cname, c.city, c.rating, c.snum FROM orders o, customers c WHERE c.cnum = o.cnum AND o.odate = '1990-04-10';
