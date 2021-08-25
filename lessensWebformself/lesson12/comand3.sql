@@ -856,7 +856,63 @@ SELECT o.cnum, c.name, c.city, c.rating, s.snum FROM orders o, customers c WHERE
 
 //++++++++++++++++++++++++++++++++++++++++++LESSON-10++++++++++++++++++++++++++++++++
 
+
 //++++++++++++++++++++++++++++++++++++++++++LESSON-11++++++++++++++++++++++++++++++++//
+
+SQL условие EXISTS
+В этом учебном материале вы узнаете, как использовать SQL условие EXISTS с синтаксисом и примерами.
+Описание
+SQL условие EXISTS используется в сочетании с подзапросом и считается выполненным, 
+если подзапрос возвращает хотя бы одну строку. 
+Его можно использовать в операторе SELECT, INSERT, UPDATE или DELETE.
+
+-- Выборка из таблицы продавцов только в случае, если есть клиенты с рейтингом больше 100 TRUE
+SELECT * FROM salers WHERE EXISTS (
+	SELECT * FROM customers WHERE rating > 100
+);
+
+-- FALSE
+SELECT * FROM salers WHERE EXISTS (
+	SELECT * FROM customers WHERE rating < 100
+);
+
+-- Выборка продавцов из Сан-Хосе только в том случае, если есть клиенты с рейтингом больше 100 TRUE
+ 
+
+-- FALSE
+SELECT * FROM salers WHERE city = 'San Jose' AND EXISTS (
+	SELECT cnum FROM customers WHERE rating > 400
+);
+
+-- EXISTS с соотнесенным подзапросом... получаем продавцов, у которых есть клиенты
+SELECT * FROM salers s WHERE EXISTS (
+	SELECT * FROM customers c WHERE s.snum = c.snum
+);
+
+-- EXISTS с соотнесенным подзапросом... получаем продавцов без клиентов
+SELECT snum, sname FROM salers s WHERE NOT EXISTS (
+	SELECT cnum FROM customers c WHERE s.snum = c.snum
+);
+
+-- UNION выборка продавцов и клиентов
+SELECT snum, sname FROM salers
+UNION
+SELECT cnum, cname FROM customers;
+
+-- количество полей в запросах должно совпадать... ERROR!
+SELECT snum, sname, city FROM salers
+UNION
+SELECT cnum, cname FROM customers;
+
+-- дубликаты значений опускаются
+SELECT snum, city FROM salers
+UNION
+SELECT snum, city FROM customers;
+
+-- включение дубликатов
+SELECT snum, city FROM salers
+UNION ALL
+SELECT snum, city FROM customers;
 
 //++++++++++++++++++++++++++++++++++++++++++LESSON-11++++++++++++++++++++++++++++++++//
 
@@ -872,8 +928,22 @@ SELECT o.cnum, c.name, c.city, c.rating, s.snum FROM orders o, customers c WHERE
 -- UNION UNION - это объединение множеств одинаковых кортежей, JOIN - создание нового множества кортежей на основе исходных множеств
 -- Внимание: если не используется ключевое слово ALL для UNION, все возвращенные строки будут уникальными, 
 --так как по умолчанию подразумевается DISTINCT, который удаляет неуникальные значения.
+Оператор SQL FULL JOIN осуществляет формирование таблицы из записей двух или нескольких таблиц. В операторе SQL FULL JOIN не важен порядок следования таблиц, он никак не влияет на окончательный результат, так как оператор является симметричным.
+
+Оператор SQL FULL JOIN можно воспринимать как сочетание операторов SQL INNER JOIN + SQL LEFT JOIN + SQL RIGHT JOIN. Алгоритм его работы следующий:
+
+    Сначала формируется таблица на основе внутреннего соединения (оператор SQL INNER JOIN).
+    Затем, в таблицу добавляются значения не вошедшие в результат формирования из правой таблицы (оператор SQL LEFT JOIN). Для них, соответствующие записи из правой таблицы заполняются значениями NULL.
+    Наконец, в таблицу добавляются значения не вошедшие в результат формирования из левой таблицы (оператор SQL RIGHT JOIN). Для них, соответствующие записи из левой таблицы заполняются значениями NULL.
+
 
 Чтобы отменить такое поведение - нужно указать ключевое слово ALL, вот так: UNION ALL. 
+
+Оператор SQL CROSS JOIN формирует таблицу перекрестным соединением (декартовым произведением) двух таблиц. При использовании оператора SQL CROSS JOIN каждая строка левой таблицы сцепляется с каждой строкой правой таблицы. В результате получается таблица со всеми возможными сочетаниями строк обеих таблиц.
+
+Оператор SQL CROSS JOIN имеет следующий синтаксис:
+
+
 -- 1
 SELECT * FROM salers INNER JOIN customers ON customers.snum = salers.snum;
 
@@ -939,6 +1009,11 @@ SELECT id, name FROM countries UNION ALL SELECT id, name FROM cities;
 
 --20
 //++++++++++++++++++++++++++++++++++++++++++LESSON-12++++++++++++++++++++++++++++++++//
+
+//++++++++++++++++++++++++++++++++++++++++++LESSON-13++++++++++++++++++++++++++++++++//
+
+
+//++++++++++++++++++++++++++++++++++++++++++LESSON-13++++++++++++++++++++++++++++++++//
 
 
 
